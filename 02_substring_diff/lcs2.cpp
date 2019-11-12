@@ -14,15 +14,20 @@ int substringDiff(string s1, string s2)
 	for(int i=0;i<len1;i++)	{
 		for(int ii=0;ii<len2;ii++) {
 			if(s1[i] == s2[ii]){
-				if(i==0|ii==0) count[position][ii] = 1;
+				if(i==0&&ii==0) count[position][ii] = 1;
+				else if(i==0)
+					count[position][ii] = count[position][ii-1]>0?count[position][ii-1]:1;
+				else if(ii==0)
+					count[position][ii] = count[position?0:1][ii]>0?count[position?0:1][ii]:1;
 				else count[position][ii] = count[position?0:1][ii-1] + 1;
-				
-				if(count[position][ii]>max) max = count[position][ii];
 			}
+			else count[position][ii] =
+					count[position][ii-1]>count[position?0:1][ii]
+					?count[position][ii-1]:count[position?0:1][ii];
 		}
-		position=position?0:1;
+		position = position?0:1;
 	}
-	return max;
+	return count[position?0:1][len2-1];
 }
 
 int main()
