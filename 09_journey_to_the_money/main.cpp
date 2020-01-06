@@ -19,8 +19,6 @@ struct node{
 vector<node> gr;
 vector<int> group_count;
 int group_num;
-int group_num_extra;
-bool keep_extra;
 
 void group_recur_down(int idx);
 void group_recur_up(int idx){
@@ -36,7 +34,7 @@ void group_recur_up(int idx){
 		}
 	}
 */
-	cout << "here is up " << idx << endl;
+//	cout << "here is up " << idx << endl;
 	group_count[group_num]++;
 	gr[idx].group = group_num;
 
@@ -67,7 +65,7 @@ void group_recur_down(int idx){
 		}
 	}
 */
-	cout << "here is down " << idx << endl;
+//	cout << "here is down " << idx << endl;
 	group_count[group_num]++;
 	gr[idx].group = group_num;
 
@@ -87,10 +85,10 @@ void group_recur_down(int idx){
 }
 
 int journeyToMoon(int n, vector<vector<int> > ast){
+	clock_t time = clock();
 	int size = ast.size();
+	int sum = 0;
 	group_num = 0;
-	keep_extra = false;
-	group_num_extra = 0;
 //	cout << "gr.size() : " << gr.size() << endl;
 
 	for(int i=0;i<size;i++){
@@ -100,6 +98,7 @@ int journeyToMoon(int n, vector<vector<int> > ast){
 	}	
 
 	int size2 = 0;
+/*
 	for(int i=0;i<n;i++){
 
 		cout << " i:  "; 
@@ -117,6 +116,10 @@ int journeyToMoon(int n, vector<vector<int> > ast){
 		}
 		cout << "\n"; 
 	}
+*/
+	clock_t slapped_time = clock() - time;
+	time = clock();
+	printf("It takes %f secods to input\n",((float)slapped_time/CLOCKS_PER_SEC));
 
 	for(int i=0;i<n;i++){
 		if(gr[i].group!=-1) continue;
@@ -136,16 +139,20 @@ int journeyToMoon(int n, vector<vector<int> > ast){
 			group_recur_up(gr[i].rel_up[ii]);
 		}
 
-		cout << "first grouping : " << i << endl;
+		//cout << "first grouping : " << i << endl;
+/*
 	int size3 = group_count.size();
 
 	for(int ii=0;ii<size3;ii++){
 		cout << group_count[ii] << " "; 
 	}
 	cout << "\n";
+*/
 		group_num++;
 	}
 
+	slapped_time = clock() - time;
+	printf("It takes %f secods to recursive\n",((float)slapped_time/CLOCKS_PER_SEC));
 /*
 	for (int i=0;i<size;i++){
 		for(int ii=0;ii<2;ii++){
@@ -158,22 +165,25 @@ int journeyToMoon(int n, vector<vector<int> > ast){
 	int size3 = group_count.size();
 	int total = 0;
 
+/*
 	for(int i=0;i<size3;i++){
 		cout << group_count[i] << " "; 
 	}
 	cout << "\n";
-	
+*/
+
 	for(int i=0;i<size3;i++){
-		for(int ii=i+1;ii<size3;ii++){
-			total+=group_count[i]*group_count[ii];
-		}
+		total += sum*(group_count[i]);
+		sum += group_count[i]; 
 	}
+	time = clock() - time;
+	printf("It takes %f secods to combination\n",((float)time/CLOCKS_PER_SEC));
 	return total;
 }
 
 int main()
 {
-	clock_t time = clock();
+	clock_t time1 = clock();
 
 	int n,p;
 	cin >> n >> p;
@@ -193,8 +203,8 @@ int main()
 	int result = journeyToMoon(n, astronaut);
 	cout << result << "\n";
 	
-	time = clock() - time;
-	printf("It takes %f secods\n",((float)time/CLOCKS_PER_SEC));
+	time1 = clock() - time1;
+	printf("It takes %f secods\n",((float)time1/CLOCKS_PER_SEC));
 
     return 0;
 }
