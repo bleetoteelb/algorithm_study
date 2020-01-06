@@ -25,16 +25,6 @@ void group_recur_up(int idx){
 	if(gr[idx].group!=-1) return;
 	int size = 0;
 
-/*
-	if(gr[idx].group==group_num) return;
-	if(gr[idx].group!=group_num && gr[idx].group!=-1) {
-		if(!keep_extra){
-			keep_extra = true;
-			group_num_extra++;
-		}
-	}
-*/
-//	cout << "here is up " << idx << endl;
 	group_count[group_num]++;
 	gr[idx].group = group_num;
 
@@ -56,16 +46,7 @@ void group_recur_up(int idx){
 void group_recur_down(int idx){
 	if(gr[idx].group!=-1) return;
 	int size = 0;
-/*
-	if(gr[idx].group==group_num) return;
-	if(gr[idx].group!=group_num && gr[idx].group!=-1) {
-		if(!keep_extra){
-			keep_extra = true;
-			group_num_extra++;
-		}
-	}
-*/
-//	cout << "here is down " << idx << endl;
+
 	group_count[group_num]++;
 	gr[idx].group = group_num;
 
@@ -84,12 +65,10 @@ void group_recur_down(int idx){
 	return;
 }
 
-int journeyToMoon(int n, vector<vector<int> > ast){
-	clock_t time = clock();
+long long journeyToMoon(int n, vector<vector<int> > ast){
 	int size = ast.size();
-	int sum = 0;
+	long long sum = 0, total = 0;
 	group_num = 0;
-//	cout << "gr.size() : " << gr.size() << endl;
 
 	for(int i=0;i<size;i++){
 		gr[ast[i][0]].rel_down.push_back(ast[i][1]);
@@ -98,28 +77,6 @@ int journeyToMoon(int n, vector<vector<int> > ast){
 	}	
 
 	int size2 = 0;
-/*
-	for(int i=0;i<n;i++){
-
-		cout << " i:  "; 
-
-		size2=gr[i].rel_up.size();
-		for(int ii=0;ii<size2;ii++){
-			cout << gr[i].rel_up[ii] << " ";
-		}
-
-		cout << " / " << i << " / " ;
-
-		size2=gr[i].rel_down.size();
-		for(int ii=0;ii<size2;ii++){
-			cout << gr[i].rel_down[ii] << " ";
-		}
-		cout << "\n"; 
-	}
-*/
-	clock_t slapped_time = clock() - time;
-	time = clock();
-	printf("It takes %f secods to input\n",((float)slapped_time/CLOCKS_PER_SEC));
 
 	for(int i=0;i<n;i++){
 		if(gr[i].group!=-1) continue;
@@ -139,45 +96,16 @@ int journeyToMoon(int n, vector<vector<int> > ast){
 			group_recur_up(gr[i].rel_up[ii]);
 		}
 
-		//cout << "first grouping : " << i << endl;
-/*
-	int size3 = group_count.size();
-
-	for(int ii=0;ii<size3;ii++){
-		cout << group_count[ii] << " "; 
-	}
-	cout << "\n";
-*/
 		group_num++;
 	}
 
-	slapped_time = clock() - time;
-	printf("It takes %f secods to recursive\n",((float)slapped_time/CLOCKS_PER_SEC));
-/*
-	for (int i=0;i<size;i++){
-		for(int ii=0;ii<2;ii++){
-			cout << ast[i][ii] << " "; 
-		}
-		cout << "\n";
-	}
-*/
 
 	int size3 = group_count.size();
-	int total = 0;
-
-/*
-	for(int i=0;i<size3;i++){
-		cout << group_count[i] << " "; 
-	}
-	cout << "\n";
-*/
-
 	for(int i=0;i<size3;i++){
 		total += sum*(group_count[i]);
 		sum += group_count[i]; 
 	}
-	time = clock() - time;
-	printf("It takes %f secods to combination\n",((float)time/CLOCKS_PER_SEC));
+
 	return total;
 }
 
@@ -200,7 +128,7 @@ int main()
 		
 	}
 
-	int result = journeyToMoon(n, astronaut);
+	long long result = journeyToMoon(n, astronaut);
 	cout << result << "\n";
 	
 	time1 = clock() - time1;
