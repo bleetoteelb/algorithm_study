@@ -13,6 +13,13 @@ int ec[100000];
 int cnt;
 vector<int> q;
 
+// Swap if a number of person is not same with position in front side.
+// If front position's person has low number than position, 
+// let front position's person swap first
+// I mean it is recursive.
+// For example, p1 p2 p5 p3 p4 and p4 want to swap with p3.
+// In this case, p3 has low number than p4 let p3 swap first with p5 which is in front of p3.
+
 bool swap(int pos){
 	int tmp_pos = pos;
 	while((pos+1)!=q[pos]){
@@ -33,6 +40,11 @@ bool swap(int pos){
 	return true;
 }
 
+
+// Start from backside.
+// I only swap in fornt side.
+// It means that only front side people bribe to back side people.
+// For example p1 p2 p4 p3, then p4 only bribed to p3, p3 never bribed to p4. 
 void minimumBribes(){
 	int size = q.size();
 	int pos = size-1;
