@@ -9,21 +9,19 @@ using namespace std;
 #define mm(a,b) a<b?b:a
 #define co(a) a==0?1:0 // change order
 
-int count[100000];
+int ec[100000];
 int cnt;
 vector<int> q;
 
-void swap(int pos){
-	
+bool swap(int pos){
 	int tmp_pos = pos;
 	while((pos+1)!=q[pos]){
-		if(q[pos]>q[pos-1]) swap(pos-1);
-		cout << "                  pos" << pos << " / cnt" << cnt << endl;
-		if(count[q[pos-1]]==0){
-			cout << "Too chaotic2" << endl;
-			return;
+		if(q[pos]>q[pos-1]) if(!swap(pos-1)) return false;
+		if(ec[q[pos-1]]==0){
+			cout << "Too chaotic" << endl;
+			return false;
 		}else {
-			count[q[pos-1]]--;
+			ec[q[pos-1]]--;
 		}
 		int tt = q[pos-1];
 		q[pos-1] = q[pos];
@@ -32,6 +30,7 @@ void swap(int pos){
 		cnt++;
 	}
 	pos = tmp_pos;
+	return true;
 }
 
 void minimumBribes(){
@@ -39,37 +38,17 @@ void minimumBribes(){
 	int pos = size-1;
 	cnt = 0;
 
-	for(int i=0;i<size+1;i++) count[i]=2;
+	for(int i=0;i<size+1;i++) ec[i]=2;
 
 	while(pos>=0){
-		cout << "pos" << pos << " / cnt" << cnt << endl;
-		for(int i=0;i<size;i++) cout << q[i] << " ";
-		cout << endl;
 		if(q[pos]==(pos+1)) pos--;
 		else if(q[pos]-(pos+1)>2){
-			cout << "Too chaotic1" << endl;
+			cout << "Too chaotic" << endl;
 			return;
 		}
 		else {
-			swap(pos);
+			if(!swap(pos)) return;
 		}
-		/*
-		else {
-			while((pos+1)!=q[pos]){
-				if(count[q[pos]]==0 || count[q[pos-1]]==0){
-					cout << "Too chaotic3" << endl;
-					return;
-				}else {
-					count[q[pos]]--;
-				}
-				int tt = q[pos-1];
-				q[pos-1] = q[pos];
-				q[pos] = tt;
-				pos--;
-				cnt++;
-			}
-		}
-		*/
 	}
 	cout << cnt << endl;
 
