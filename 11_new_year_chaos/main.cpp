@@ -9,41 +9,51 @@ using namespace std;
 #define mm(a,b) a<b?b:a
 #define co(a) a==0?1:0 // change order
 
-void minimumBribes(vector<int> q){
+int count[100000];
+int cnt;
+vector<int> q;
+
+void swap(int pos){
+	
+	int tmp_pos = pos;
+	while((pos+1)!=q[pos]){
+		if(q[pos]>q[pos-1]) swap(pos-1);
+		cout << "                  pos" << pos << " / cnt" << cnt << endl;
+		if(count[q[pos-1]]==0){
+			cout << "Too chaotic2" << endl;
+			return;
+		}else {
+			count[q[pos-1]]--;
+		}
+		int tt = q[pos-1];
+		q[pos-1] = q[pos];
+		q[pos] = tt;
+		pos--;
+		cnt++;
+	}
+	pos = tmp_pos;
+}
+
+void minimumBribes(){
 	int size = q.size();
-	int count[100000] = {0,};
-	int cnt = 0;
-	int pos = 0;
+	int pos = size-1;
+	cnt = 0;
+
 	for(int i=0;i<size+1;i++) count[i]=2;
 
-	while(pos<size){
+	while(pos>=0){
 		cout << "pos" << pos << " / cnt" << cnt << endl;
 		for(int i=0;i<size;i++) cout << q[i] << " ";
 		cout << endl;
-		if(q[pos]==(pos+1)) pos++;
-		else if(q[pos]-(pos+1)>2||(pos+1)-q[pos]>2){
+		if(q[pos]==(pos+1)) pos--;
+		else if(q[pos]-(pos+1)>2){
 			cout << "Too chaotic1" << endl;
 			return;
 		}
-		else if(q[pos]-(pos+1)>0){
-			int tmp_pos = pos;
-			while((pos+1)!=q[pos]){
-				cout << "                  pos" << pos << " / cnt" << cnt << endl;
-				if(count[q[pos]]==0 || count[q[pos+1]]==0){
-					cout << "Too chaotic2" << endl;
-					return;
-				}else {
-					count[q[pos]]--;
-					count[q[pos+1]]--;
-				}
-				int tt = q[pos];
-				q[pos] = q[pos+1];
-				q[pos+1] = tt;
-				pos++;
-				cnt++;
-			}
-			pos = tmp_pos;
+		else {
+			swap(pos);
 		}
+		/*
 		else {
 			while((pos+1)!=q[pos]){
 				if(count[q[pos]]==0 || count[q[pos-1]]==0){
@@ -51,7 +61,6 @@ void minimumBribes(vector<int> q){
 					return;
 				}else {
 					count[q[pos]]--;
-					count[q[pos-1]]--;
 				}
 				int tt = q[pos-1];
 				q[pos-1] = q[pos];
@@ -60,6 +69,7 @@ void minimumBribes(vector<int> q){
 				cnt++;
 			}
 		}
+		*/
 	}
 	cout << cnt << endl;
 
@@ -74,7 +84,7 @@ int main()
 
 
 	for (int i=0;i<t;i++){
-		vector<int> q;
+		if(!q.empty()) q.clear();
 		int temp;
 	
 		cin >> k;
@@ -83,7 +93,7 @@ int main()
 			q.push_back(temp);	
 		}
 
-		minimumBribes(q); 
+		minimumBribes(); 
 	}
 
 	
